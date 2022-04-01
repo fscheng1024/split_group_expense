@@ -1,6 +1,8 @@
 import os
 import csv
 from utils.Bills import Bills
+import numpy as np
+import cv2
 
 
 def get_all_bills():
@@ -57,6 +59,7 @@ def main():
             my_bill.get_each_balance()
             
         elif option == 'q' or option == 'Q':
+            print("Bye!")
             keep_going = False
         
         else:

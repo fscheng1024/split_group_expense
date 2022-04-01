@@ -1,5 +1,8 @@
+from itertools import count
 import os
 import csv
+import numpy as np
+import cv2
 
 class Bills:
     def __init__(self, title):
@@ -81,3 +84,38 @@ class Bills:
 
         print("\ntotal: {} \navg: {} \npeople: {}".format(total, avg, len(member_list)))
         print("\neach member should pay: \n", member_list)
+        self.save_balance_img(member_list)
+
+    def save_balance_img(self, member_list):
+        WHITE = (235, 235, 235)
+        GREEN = (113, 179, 60)
+        RED = (99, 99, 238)
+        GREY = (79, 79, 79)
+        WINDOW_W = len(member_list)*60
+        WINDOW_H = len(member_list)*60
+        img = np.zeros((WINDOW_W, WINDOW_H, 3), np.uint8)
+        img[:] = GREY
+
+        count = 0
+        name_x, name_y = 10, 40
+        paid_init_x, paid_init_y = 130, 40
+        bar_init_y = 10
+        item_space = 50
+        all_paids = member_list.values()
+        max_paid = max(all_paids)
+        for name, paid in member_list.items():
+            bar_w = int((abs(paid) / max_paid)*200)
+            bar_h = 45
+            balance = str(paid)
+            if paid > 0:
+                cv2.rectangle(img, (paid_init_x, bar_init_y + count*item_space), (paid_init_x + bar_w, bar_init_y + bar_h + count*item_space), GREEN, -1)
+            else:
+                cv2.rectangle(img, (paid_init_x, bar_init_y + count*item_space), (paid_init_x + bar_w, bar_init_y + bar_h + count*item_space), RED, -1)
+            
+            cv2.putText(img, name, (name_x, name_y + count*item_space), cv2.FONT_HERSHEY_SIMPLEX, 1, WHITE, 1, cv2.LINE_AA)
+            cv2.putText(img, balance, (paid_init_x, paid_init_y + count*item_space), cv2.FONT_HERSHEY_SIMPLEX, 1, WHITE, 1, cv2.LINE_AA)
+
+            count += 1
+
+        cv2.imwrite('balance.png', img)
+        print("Image saved!")

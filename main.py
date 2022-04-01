@@ -1,14 +1,12 @@
 import os
-import csv
 from utils.Bills import Bills
-import numpy as np
-import cv2
 
 
 def get_all_bills():
     file_dir = "./data/"
     file_ext = ".csv"
     bills = [_ for _ in os.listdir(file_dir) if _.endswith(file_ext)]
+    print("\nBills in the data folder: ")
     print(bills)
 
     return bills

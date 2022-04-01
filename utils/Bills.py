@@ -1,4 +1,3 @@
-from itertools import count
 import os
 import csv
 import numpy as np

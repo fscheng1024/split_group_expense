@@ -93,6 +93,8 @@ class Bills:
         GREY = (79, 79, 79)
         WINDOW_W = len(member_list)*60
         WINDOW_H = len(member_list)*60
+        FONT_SCALE = 1
+        FONT_THICKNESS = 2
         img = np.zeros((WINDOW_W, WINDOW_H, 3), np.uint8)
         img[:] = GREY
 
@@ -100,20 +102,21 @@ class Bills:
         name_x, name_y = 10, 40
         paid_init_x, paid_init_y = 130, 40
         bar_init_y = 10
-        item_space = 50
+        item_space = 60
         all_paids = member_list.values()
         max_paid = max(all_paids)
         for name, paid in member_list.items():
             bar_w = int((abs(paid) / max_paid)*200)
             bar_h = 45
-            balance = str(paid)
+            balance = str(paid) 
             if paid > 0:
                 cv2.rectangle(img, (paid_init_x, bar_init_y + count*item_space), (paid_init_x + bar_w, bar_init_y + bar_h + count*item_space), GREEN, -1)
+                balance = "+" + str(paid) 
             else:
                 cv2.rectangle(img, (paid_init_x, bar_init_y + count*item_space), (paid_init_x + bar_w, bar_init_y + bar_h + count*item_space), RED, -1)
             
-            cv2.putText(img, name, (name_x, name_y + count*item_space), cv2.FONT_HERSHEY_SIMPLEX, 1, WHITE, 1, cv2.LINE_AA)
-            cv2.putText(img, balance, (paid_init_x, paid_init_y + count*item_space), cv2.FONT_HERSHEY_SIMPLEX, 1, WHITE, 1, cv2.LINE_AA)
+            cv2.putText(img, name, (name_x, name_y + count*item_space), cv2.FONT_HERSHEY_SIMPLEX, FONT_SCALE, WHITE, FONT_THICKNESS, cv2.LINE_AA)
+            cv2.putText(img, balance, (paid_init_x, paid_init_y + count*item_space), cv2.FONT_HERSHEY_SIMPLEX, FONT_SCALE, WHITE, FONT_THICKNESS, cv2.LINE_AA)
 
             count += 1
 

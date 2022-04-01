@@ -17,7 +17,7 @@ def get_all_bills():
 def main():
     print("=== Split bills for shared group expenses. ===")
 
-    option = input("Create new bill? (y|n)")
+    option = input("Create new bill? (y|n) ")
     if option == 'n':
         bills = get_all_bills()
         title = input("Choose a bill that you what to check: ") 

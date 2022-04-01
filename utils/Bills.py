@@ -5,18 +5,24 @@ import cv2
 
 class Bills:
     def __init__(self, title):
-        self._keep_adding = True
-        self._csv_pth = "./data/" + title + ".csv"
+        self._title = title
+        self._csv_pth = "./data/" + self._title + ".csv"
+
         if not os.path.exists(self._csv_pth):
             with open(self._csv_pth, 'w', newline='') as csv_file:
                 writer = csv.writer(csv_file)
                 writer.writerow(["Name", "Item", "Cost"])
 
     def add_item(self):
-        name, item, cost = input("Add a item to your bill.[ Name | Item | Cost ]: ").split()
-        with open(self._csv_pth, 'a', newline='') as csv_file:
-            writer = csv.writer(csv_file)
-            writer.writerow([name, item, cost])
+        _keep_adding = True
+        while(_keep_adding):
+            name, item, cost = input("Add a item to your bill.[ Name | Item | Cost ]: ").split()
+            with open(self._csv_pth, 'a', newline='') as csv_file:
+                writer = csv.writer(csv_file)
+                writer.writerow([name, item, cost])
+            stop = input("keep adding item? (y|n) ")
+            if stop.lower() == 'n':
+                _keep_adding = False
 
     def get_all_items(self):
         all_items = []
@@ -34,6 +40,7 @@ class Bills:
         total = 0
         member_list = self.get_members()
         print(member_list)
+
         name = input("Check items by name: ")
         with open(self._csv_pth, 'r') as csv_file:
             reader = csv.reader(csv_file)
@@ -106,7 +113,7 @@ class Bills:
         max_paid = max(all_paids)
         for name, paid in member_list.items():
             bar_w = int((abs(paid) / max_paid)*200)
-            bar_h = 45
+            bar_h = 40
             balance = str(paid) 
             if paid > 0:
                 cv2.rectangle(img, (paid_init_x, bar_init_y + count*item_space), (paid_init_x + bar_w, bar_init_y + bar_h + count*item_space), GREEN, -1)
@@ -118,6 +125,6 @@ class Bills:
             cv2.putText(img, balance, (paid_init_x, paid_init_y + count*item_space), cv2.FONT_HERSHEY_SIMPLEX, FONT_SCALE, WHITE, FONT_THICKNESS, cv2.LINE_AA)
 
             count += 1
-
-        cv2.imwrite('balance.png', img)
+        saved_name = self._title + "_balance.png"
+        cv2.imwrite(saved_name.lower(), img)
         print("Image saved!")

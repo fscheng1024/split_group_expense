@@ -33,8 +33,8 @@ def main():
     while keep_going:
         print("\n==================")
         print("1 - get all bills")
-        print("2 - get all items in list")
-        print("3 - add item to list")
+        print("2 - get all items in the bill")
+        print("3 - add item to the bill")
         print("4 - get each member paid item")
         print("5 - get each member balance")
         print("q/Q - Quit")
